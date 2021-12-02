@@ -111,9 +111,20 @@ class DuckyScript:
         analysis = """\n\nMallard Analysis and Commentary
 ================================\n"""
         for decoded_line in self.decoded_lines:
-            decoded_line_str = str(decoded_line)
-            if "GUI SPACE" in decoded_line_str:
-                analysis += f"Spotlight opened ({decoded_line_str}) - Possible Mac Attack"
+            original_line = str(decoded_line)
+            decoded_line_str = str(decoded_line).lower()
+            if "gui space" in decoded_line_str:
+                analysis += f"Spotlight opened ({original_line}) - Possible Mac Attack\n"
+            if "gui r" in decoded_line_str:
+                analysis += f"Run opened ({original_line}) - Possible Windows Attack\n"
+            if "powershell" in decoded_line_str:
+                analysis += f"Powershell invoked ({original_line}) - Possible Windows Attack\n"
+            if "net user /add" in decoded_line_str:
+                analysis += f"User Added ({original_line}) - Possible Windows Attack\n"
+            if "net localgroup administrators" in decoded_line_str:
+                analysis += f"User Added to administrators group ({original_line}) - Possible Windows Attack\n"
+            if "nc " in decoded_line_str or "netcat " in decoded_line_str or "ncat " in decoded_line_str:
+                analysis += f"Netcat invoked ({original_line})\n"
         return analysis
 
 
